@@ -1,0 +1,47 @@
+body { background-color:#ddd; }
+.wrapper {
+	margin: 1em auto;
+	max-width: 600px;
+	background-color: #fff;
+	border: solid 1px #aaa;
+	padding: 15px;
+	font-family: Georgia, serif;
+	overflow: hidden;
+}
+h1 {
+	font-family: Helvetica, Arial, sans-serif;
+	margin:0;
+	text-align: center;
+}
+
+.nav {
+	list-style: none;
+	padding: 0;
+	margin: 1em;
+	text-align: center;
+}
+.nav li {
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+}
+a {
+	color: rgb(0,144,210);
+	padding: .2em 0.5em;
+}
+a:hover { text-decoration:none; }
+
+#content {
+	float:left;
+	width: 48%;
+	margin-right: 4%;
+	line-height: 1.4em;
+}
+.media {
+	float: right;
+	width: 48%;
+	padding-top: 1em;
+}
+img {
+	max-width: 100%;
+}
