@@ -5,24 +5,38 @@ if (window.history && 'pushState' in history) {
 		"use strict";
 		
 		function loadPage(href) {
-			var request = $.ajax({
-				url : href
-			});
-			return request;
+			return $.ajax(href);
 		}
 		
-		function displayContent(state) {	
+		function displayContent(state, reverse) {	
 			if (state === null) { return; } 
+
 			document.title = state.title;
-			$('#content').html(state.content);
-			$('#photo').attr('src', state.photo);
+			//$('.content').html(state.content);
+			//$('.photo').attr('src', state.photo);
+			
+			var $clone = $('.wrapper').clone();
+			$clone.find('.content').html(state.content);
+			$clone.find('.photo').attr('src', state.photo);
+			
+			$('.wrapper')
+				.addClass((reverse) ? 'transition-in' : 'transition-out')
+				.after($clone.addClass((!reverse) ? 'transition-in' : 'transition-out'))
+				.one('webkitTransitionEnd', function () {
+					$(this).remove();
+			});
+			
+			setTimeout(function () {
+				$clone.removeClass((!reverse) ? 'transition-in' : 'transition-out');
+			}, 200);		
+			
 		}
 		
 		function createState(html) {
 			var $page = $(html);
 			var state = {
-				content : $page.find('#content').html(),
-				photo : $page.find('#photo').attr('src'),
+				content : $page.find('.content').html(),
+				photo : $page.find('.photo').attr('src'),
 				title : $page.filter('title').text()
 			};
 			return state;
@@ -46,7 +60,7 @@ if (window.history && 'pushState' in history) {
 		
 		// handle forward/back buttons
 		window.addEventListener('popstate', function(e) {
-			displayContent(e.state);
+			displayContent(e.state, true);
 		});
 		
 		// handle init page load

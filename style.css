@@ -1,13 +1,30 @@
 body { background-color:#ddd; }
 .wrapper {
-	margin: 1em auto;
-	max-width: 600px;
+	width: 600px;
+	height: 400px;
 	background-color: #fff;
 	border: solid 1px #aaa;
 	padding: 15px;
 	font-family: Georgia, serif;
 	overflow: hidden;
+	position: absolute;
+	top: 100px;
+	left: 50%;
+	margin: 0 0 0 -316px;
+	opacity: 1;
+	-webkit-transition: all .5s ease-in-out;
 }
+
+.transition-out {
+	opacity: 0;
+	-webkit-transform: scale(.75) rotate(-10deg);
+}
+
+.transition-in {
+	opacity: 0;
+	-webkit-transform: scale(1.25) rotate(10deg);
+}
+
 h1 {
 	font-family: Helvetica, Arial, sans-serif;
 	margin:0;
@@ -31,7 +48,7 @@ a {
 }
 a:hover { text-decoration:none; }
 
-#content {
+.content {
 	float:left;
 	width: 48%;
 	margin-right: 4%;
