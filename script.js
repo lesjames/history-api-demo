@@ -30,7 +30,7 @@ if (window.history && 'pushState' in history) {
             $('.wrapper')
 
                 // add transition class to current wrapper
-                .addClass((reverse) ? 'transition-in' : 'transition-out')
+                .addClass((!reverse) ? 'transition-out' : 'transition-in')
 
                 // append clone after current wrapper and add a transition class
                 .after($clone.addClass((!reverse) ? 'transition-in' : 'transition-out'))
