@@ -10,7 +10,7 @@ if (window.history && 'pushState' in history) {
         function displayContent(state, reverse) {
 
             // chrome inits with popstate
-            // so handle no state gracefully
+            // so bail out if state is null
             if (state === null) { return; }
 
             // change the page title

@@ -150,3 +150,11 @@ window.onpopstate = function(evt) {
 
 };
 ```
+
+This poses a slight problem though. Chrome fires the popstate event on page load. So this code will fire on your initial page load and try to pass an empty state object to our display function. This will cause and error because our function expects there to be data in that state object. Let's guard against this by adding a line to the beginning of our displayContent function.
+
+```javascript
+// chrome inits with popstate
+// so bail out if state is null
+if (state === null) { return; }
+```
