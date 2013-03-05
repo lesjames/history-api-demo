@@ -48,16 +48,13 @@ if (window.history && 'pushState' in history) {
         }
 
         // create a state object from html
-        function createState(html) {
-
-            // create a jQuery selection
-            var $page = $(html);
+        function createState($content) {
 
             // create state object
             var state = {
-                content : $page.find('.content').html(),
-                photo : $page.find('.photo').attr('src'),
-                title : $page.filter('title').text()
+                content : $content.find('.content').html(),
+                photo : $content.find('.photo').attr('src'),
+                title : $content.filter('title').text()
             };
 
             // return the object
@@ -77,7 +74,7 @@ if (window.history && 'pushState' in history) {
             req.done(function (data) {
 
                 // create state object
-                var state = createState(data);
+                var state = createState($(data));
 
                 // change the page content
                 displayContent(state);
@@ -106,7 +103,7 @@ if (window.history && 'pushState' in history) {
         };
 
         // create state on page init and replace the current history with it
-        var state = createState($('html').html());
+        var state = createState($('html'));
         history.replaceState(state, document.title, document.location.href);
 
     }());

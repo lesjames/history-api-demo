@@ -67,20 +67,17 @@ $(document).on('click', 'a', function (evt) {
 
 ## Step 4: Make a state object
 
-Let's jump out of our click handler and create a function that will create a state object for us. We'll pass it the HTML from our page. It will pick that HTML apart and store the info we want in an object. We are going to store the page content, title and photo source in the history we create. Finally, we'll return that state object so that we can use it later.
+Let's jump out of our click handler and create a function that will create a state object for us. We'll pass it a jQuery section of the HTML from our page. It will pick that HTML apart and store the info we want in an object. We are going to store the page content, title and photo source in the history we create. Finally, we'll return that state object so that we can use it later.
 
 ```javascript
 // create a state object from html
-function createState(html) {
-
-    // create a jQuery selection
-    var $page = $(html);
+function createState($content) {
 
     // create state object
     var state = {
-        content : $page.find('.content').html(),
-        photo : $page.find('.photo').attr('src'),
-        title : $page.filter('title').text()
+        content : $content.find('.content').html(),
+        photo : $content.find('.photo').attr('src'),
+        title : $content.filter('title').text()
     };
 
     // return the object
@@ -107,14 +104,14 @@ function displayContent(state) {
 
 ## Step 6: AJAX success
 
-Inside of our AJAX success method let's use the new functions we just wrote to create a state and use it to change the content of the page.
+Inside of our AJAX success method let's use the new functions we just wrote to create a state and use it to change the content of the page. Remember to pass our AJAX data as a jQuery selection.
 
 ```javascript
 // what to do with ajax success
 req.done(function (data) {
 
     // create state object
-    var state = createState(data);
+    var state = createState($(data));
 
     // change the page content
     displayContent(state);
@@ -129,7 +126,7 @@ We are almost there. We have changed the content of the page after requesting ne
 req.done(function (data) {
 
     // create state object
-    var state = createState(data);
+    var state = createState($(data));
 
     // change the page content
     displayContent(state);
@@ -138,4 +135,18 @@ req.done(function (data) {
     history.pushState(state, state.title, evt.target.href);
     
 });
+```
+
+## Step 7: Forward/Back buttons
+
+Now that we are navigating and creating history as we go, we need to handle what happens if we go back in time. The browser forward and back buttons fire and event called 'popstate'. That event gets passed to it whatever we stored in the state object. Since that object has all the information we need to update the page let's just send it to our display function.
+
+```javascript
+// handle forward/back buttons
+window.onpopstate = function(evt) {
+
+    // get the state and change the page content
+    displayContent(evt.state);
+
+};
 ```
