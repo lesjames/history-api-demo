@@ -5,7 +5,7 @@ if (window.history && 'pushState' in history) {
     (function () {
 
         // because JSHint told me to
-        "use strict";
+        'use strict';
 
         function displayContent(state, reverse) {
 
@@ -98,12 +98,12 @@ if (window.history && 'pushState' in history) {
         });
 
         // handle forward/back buttons
-        window.addEventListener('popstate', function(e) {
+        window.onpopstate = function(e) {
 
             // get the state and change the page content
             displayContent(e.state, true);
 
-        });
+        };
 
         // create state on page init and replace the current history with it
         var state = createState($('html').html());
