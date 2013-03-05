@@ -50,7 +50,7 @@ if (window.history && 'pushState' in history) {
         // create a state object from html
         function createState(html) {
 
-            // cache $ selection
+            // create a jQuery selection
             var $page = $(html);
 
             // create state object
