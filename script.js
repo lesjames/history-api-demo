@@ -65,10 +65,10 @@ if (window.history && 'pushState' in history) {
         }
 
         // handle click on link
-        $(document).on('click', 'a', function (e) {
+        $(document).on('click', 'a', function (evt) {
 
             // prevent normal navigation
-            e.preventDefault();
+            evt.preventDefault();
 
             // request new page through ajax
             var req = $.ajax(this.href);
@@ -83,7 +83,7 @@ if (window.history && 'pushState' in history) {
                 displayContent(state);
 
                 // push the state into history
-                history.pushState(state, state.title, e.target.href);
+                history.pushState(state, state.title, evt.target.href);
 
             });
 
@@ -91,17 +91,17 @@ if (window.history && 'pushState' in history) {
             req.fail(function () {
 
                 // revert to normal navigaiton
-                document.location = e.target.href;
+                document.location = evt.target.href;
 
             });
 
         });
 
         // handle forward/back buttons
-        window.onpopstate = function(e) {
+        window.onpopstate = function(evt) {
 
             // get the state and change the page content
-            displayContent(e.state, true);
+            displayContent(evt.state, true);
 
         };
 
