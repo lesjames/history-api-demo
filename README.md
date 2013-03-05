@@ -158,3 +158,43 @@ This poses a slight problem though. Chrome fires the popstate event on page load
 // so bail out if state is null
 if (state === null) { return; }
 ```
+
+## Step 8: Handle the first page
+
+So far we have been creating history when someone clicks on a link. This poses one final problem for us. What happens when the back button gets back to the first page. That page doesn't have a state object stored with it, because we didn't use an internal link to get there. This is where replaceState steps in. On page load, we need to replace our history entry for that page with a state object containing that's pages content. Before the end of our IIFE let's create a state object and load it into history with replaceState.
+
+```javascript
+// create state on page init and replace the current history with it
+var state = createState($('html'));
+history.replaceState(state, document.title, document.location.href);
+```
+
+## Step 9: Profit!
+
+To this point we have simply been recreating everything the browser does on it's own. We are requesting the content of a link, displaying the content of that link and recording a record of the previous page in our history. All this work for what is essentially, exactly the same experience. However with our new AJAX and pushState foundation we can now animate the differce between pages. This is something you just can't do with hard page refreshes. We are going to use CSS transtions to animate our content in and out. In our CSS let's add some transition and transform styles.
+
+```css
+.wrapper {
+	-webkit-transition: all .5s ease-in-out;
+}
+.transition-out {
+	opacity: 0;
+	-webkit-transform: scale(.75) rotate(-10deg);
+}
+.transition-in {
+	opacity: 0;
+	-webkit-transform: scale(1.25) rotate(10deg);
+}
+
+```
+
+Now let's play with our displayContent function. Remove the previous code that switched our content and photo. Let's clone our `.wrapper` element and change the content inside that clone.
+
+```javascript
+// clone the current wrapper
+var $clone = $('.wrapper').clone();
+
+// replace the content in the clone
+$clone.find('.content').html(state.content);
+$clone.find('.photo').attr('src', state.photo);
+```
