@@ -198,3 +198,83 @@ var $clone = $('.wrapper').clone();
 $clone.find('.content').html(state.content);
 $clone.find('.photo').attr('src', state.photo);
 ```
+
+Now let's append our clone and transition content out with our classes. On our old `.wrapper` let's add a one time event listener for when the transition out has finished. When that event fires we are going to remove the old content from the DOM.
+
+```javascript
+$('.wrapper')
+
+    // add transition class to current wrapper
+    .addClass('transition-out')
+
+    // append clone after current wrapper and add a transition class
+    .after($clone.addClass('transition-in'))
+
+    // when finished animating remove old wrapper
+    .one('webkitTransitionEnd', function () {
+        $(this).remove();
+    });
+```
+
+That handles our old content. With our new content ready and waiting we just need to remove the transtion class to trigger the animation. We want to give the old content a little time to get out of the way so we'll remove the class after a short timeout.
+
+```javascript
+// animate new content in after short delay
+setTimeout(function () {
+    $clone.removeClass('transition-in');
+}, 200);
+```
+
+## Step 10: A finishing touch
+
+Our content now animates in and out as we navigate through our site. It makes sense that hitting the back button should reverse that content transition. So let's reverse the transition classes if our displayContent function gets fired from the popstate event. Let's add a second argument to the function call in the popstate event. We'll use a truthy value to trigger a reverse transition.
+
+```javascript
+// handle forward/back buttons
+window.onpopstate = function(evt) {
+
+    // get the state and change the page content
+    displayContent(evt.state, true);
+
+};
+```
+
+Now let's check for that truthy value and use a turnary statment to switch our classes. Here is the final display function.
+
+```javascript
+function displayContent(state, reverse) {
+
+    // chrome inits with popstate
+    // so bail out if state is null
+    if (state === null) { return; }
+
+    // change the page title
+    document.title = state.title;
+
+    // clone the current wrapper
+    var $clone = $('.wrapper').clone();
+
+    // replace the content in the clone
+    $clone.find('.content').html(state.content);
+    $clone.find('.photo').attr('src', state.photo);
+
+    $('.wrapper')
+
+        // add transition class to current wrapper
+        .addClass((!reverse) ? 'transition-out' : 'transition-in')
+
+        // append clone after current wrapper and add a transition class
+        .after($clone.addClass((!reverse) ? 'transition-in' : 'transition-out'))
+
+        // when finished animating remove old wrapper
+        .one('webkitTransitionEnd', function () {
+            $(this).remove();
+        });
+
+    // animate new content in after short delay
+    setTimeout(function () {
+        $clone.removeClass((!reverse) ? 'transition-in' : 'transition-out');
+    }, 200);
+
+}
+```
