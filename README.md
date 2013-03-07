@@ -151,7 +151,7 @@ window.onpopstate = function(evt) {
 };
 ```
 
-This poses a slight problem though. Chrome fires the popstate event on page load. So this code will fire on your initial page load and try to pass an empty state object to our display function. This will cause and error because our function expects there to be data in that state object. Let's guard against this by adding a guard around our function call.
+This poses a slight problem though. Chrome fires the popstate event on page load. So this code will fire on your initial page load and try to pass an empty state object to our display function. This will cause and error because our function expects there to be data in that state object. Let's guard against this by adding a check for the state object.
 
 ```javascript
 // handle forward/back buttons
