@@ -151,12 +151,19 @@ window.onpopstate = function(evt) {
 };
 ```
 
-This poses a slight problem though. Chrome fires the popstate event on page load. So this code will fire on your initial page load and try to pass an empty state object to our display function. This will cause and error because our function expects there to be data in that state object. Let's guard against this by adding a line to the beginning of our displayContent function.
+This poses a slight problem though. Chrome fires the popstate event on page load. So this code will fire on your initial page load and try to pass an empty state object to our display function. This will cause and error because our function expects there to be data in that state object. Let's guard against this by adding a guard around our function call.
 
 ```javascript
-// chrome inits with popstate
-// so bail out if state is null
-if (state === null) { return; }
+// handle forward/back buttons
+window.onpopstate = function(evt) {
+    
+    // chrome inits with popstate so check for state
+    if (evt.state) {
+        // get the state and change the page content
+        displayContent(evt.state);    
+    }
+
+};
 ```
 
 ## Step 8: Handle the first page
@@ -232,9 +239,12 @@ Our content now animates in and out as we navigate through our site. It makes se
 ```javascript
 // handle forward/back buttons
 window.onpopstate = function(evt) {
-
-    // get the state and change the page content
-    displayContent(evt.state, true);
+    
+    // chrome inits with popstate so check for state
+    if (evt.state) {
+        // get the state and change the page content
+        displayContent(evt.state, true);    
+    }
 
 };
 ```
@@ -243,10 +253,6 @@ Now let's check for that truthy value and use a turnary statment to switch our c
 
 ```javascript
 function displayContent(state, reverse) {
-
-    // chrome inits with popstate
-    // so bail out if state is null
-    if (state === null) { return; }
 
     // change the page title
     document.title = state.title;

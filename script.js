@@ -9,10 +9,6 @@ if (window.history && 'pushState' in history) {
 
         function displayContent(state, reverse) {
 
-            // chrome inits with popstate
-            // so bail out if state is null
-            if (state === null) { return; }
-
             // change the page title
             document.title = state.title;
 
@@ -97,9 +93,12 @@ if (window.history && 'pushState' in history) {
         // handle forward/back buttons
         window.onpopstate = function(evt) {
 
-            // get the state and change the page content
-            displayContent(evt.state, true);
-
+            // guard against popstate event on chrome init
+            if (evt.state) {
+                // get the state and change the page content
+                displayContent(evt.state, true);
+            }
+            
         };
 
         // create state on page init and replace the current history with it
