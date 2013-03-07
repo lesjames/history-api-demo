@@ -165,7 +165,7 @@ So far we have been creating history when someone clicks on a link. This poses o
 
 ```javascript
 // create state on page init and replace the current history with it
-var state = createState($('html'));
+var state = createState( $('title, body') );
 history.replaceState(state, document.title, document.location.href);
 ```
 
